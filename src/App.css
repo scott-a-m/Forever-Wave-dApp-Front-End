@@ -1,0 +1,209 @@
+
+  body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  background: var(--color-darkblue);
+  background-image: linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.6),
+      rgba(153, 204, 255, 0.6)
+    ),
+    url(https://scott-a-m.github.io/hosted-assets/beach-1852945.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.mainContainer {
+  display: flex;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.messages {
+
+                  background-color: "OldLace";
+                  color: "#002266";
+                  margin-top: "16px";
+                  margin-bottom: "16px";
+                  padding: "8px";
+                  font-size: "1rem";
+
+}
+
+.dataContainer {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.6)
+    );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 800px;
+}
+
+
+.header {
+  text-align: center;
+  font-size: 60px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color:  #002266;
+  font-family: 'Zhi Mang Xing', cursive;
+}
+
+.bio {
+  text-align: center;
+  font-family: 'Cabin', sans-serif;  font-size: 1.5rem;
+  color:  #002266;
+  margin-top: 16px;
+  margin-bottom: 50px;
+}
+
+.connectContainer {
+  text-align: center;
+}
+
+.waveButton {
+  cursor: pointer;
+  margin-top: 1rem;
+  padding: 8px;
+  width: 200px;
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  background: #002266;
+  font-weight: bolder;
+  font-size: 1.2rem;
+  font-family: 'Mochiy Pop P One', sans-serif; 
+  margin-bottom: 30px; 
+}
+
+.waveButton:hover {
+  color: #002266;
+  background: white;
+}
+
+.input-box {
+    height: 40px !important;
+    margin-top: 1rem;
+
+}
+
+.waveCount {
+  color: #002266;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.checkChain {
+  margin-top: 50px;
+  color: #002266;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+#seconds {
+  color: #002266;
+  text-align: center;
+}
+
+#message-box {
+  color: #002266;
+  text-align: center;
+}
+
+#message {
+  max-width: 800px;
+  width: 100%;
+  height: 30px;
+  margin-bottom: 20px;
+  border-radius: 0.2rem;
+  border: solid #002266;
+  outline: #002266;
+  font-size: 1rem;
+}
+
+
+.loader {
+  margin: 0 auto;
+  border: 16px solid white; /* Light grey */
+  border-top: 16px solid #002266; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 2s linear infinite;
+}
+
+.mining {
+  color: #002266;
+  font-size: 2rem;
+  font-family: 'Zhi Mang Xing', cursive;
+  text-align: center;
+}
+
+.errMsg {
+  color: red;
+  font-size: 1.5rem;
+  font-family: 'Zhi Mang Xing', cursive;
+  text-align: center;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+a {
+  color: #002266;
+}
+
+a:visited {
+  color: #002266;
+}
+
+a:hover {
+  color: #1a66ff;
+}
+
+a:active {
+  color: #1a66ff;;
+}
+
+cont {
+  margin-top: 2rem;
+}
+
+#notice {
+  margin: 0 auto;
+    background: linear-gradient(
+      115deg,
+      rgba(230, 243, 255, 0.6),
+      rgba(230, 243, 255, 0.6)
+    );
+  color: black;
+  padding: 0.5rem;
+  border: solid 1px rgba(230, 243, 255);
+  border-radius: 0.2rem;
+  max-width: 620px;
+  text-align: center !important;
+}
+
+#notice-text {
+        font-family: 'Jost', sans-serif;
+}
