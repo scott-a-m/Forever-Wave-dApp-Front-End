@@ -1,4 +1,4 @@
-# Forever Wave dApp Front-End
+#Forever Wave dApp Front-End
 
 This is the front-end code for the Forever Wave dApp.
 
