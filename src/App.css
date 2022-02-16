@@ -1,5 +1,4 @@
-
-  body::before {
+body::before {
   content: '';
   position: fixed;
   top: 0;
@@ -8,11 +7,9 @@
   width: 100%;
   z-index: -1;
   background: var(--color-darkblue);
-  background-image: linear-gradient(
-      115deg,
+  background-image: linear-gradient(115deg,
       rgba(255, 255, 255, 0.6),
-      rgba(153, 204, 255, 0.6)
-    ),
+      rgba(153, 204, 255, 0.6)),
     url(https://scott-a-m.github.io/hosted-assets/beach-1852945.jpg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -27,12 +24,12 @@
 
 .messages {
 
-                  background-color: "OldLace";
-                  color: "#002266";
-                  margin-top: "16px";
-                  margin-bottom: "16px";
-                  padding: "8px";
-                  font-size: "1rem";
+  background-color: "OldLace";
+  color: "#002266";
+  margin-top: "16px";
+  margin-bottom: "16px";
+  padding: "8px";
+  font-size: "1rem";
 
 }
 
@@ -42,11 +39,9 @@
   margin-top: 2rem;
   margin-bottom: 2rem;
   border-radius: 0.5rem;
-  background: linear-gradient(
-      115deg,
+  background: linear-gradient(115deg,
       rgba(255, 255, 255, 0.6),
-      rgba(255, 255, 255, 0.6)
-    );
+      rgba(255, 255, 255, 0.6));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,14 +54,15 @@
   font-size: 60px;
   font-weight: 600;
   margin-bottom: 30px;
-  color:  #002266;
+  color: #002266;
   font-family: 'Zhi Mang Xing', cursive;
 }
 
 .bio {
   text-align: center;
-  font-family: 'Cabin', sans-serif;  font-size: 1.5rem;
-  color:  #002266;
+  font-family: 'Cabin', sans-serif;
+  font-size: 1.5rem;
+  color: #002266;
   margin-top: 16px;
   margin-bottom: 50px;
 }
@@ -86,8 +82,8 @@
   background: #002266;
   font-weight: bolder;
   font-size: 1.2rem;
-  font-family: 'Mochiy Pop P One', sans-serif; 
-  margin-bottom: 30px; 
+  font-family: 'Mochiy Pop P One', sans-serif;
+  margin-bottom: 30px;
 }
 
 .waveButton:hover {
@@ -96,8 +92,8 @@
 }
 
 .input-box {
-    height: 40px !important;
-    margin-top: 1rem;
+  height: 40px !important;
+  margin-top: 1rem;
 
 }
 
@@ -142,8 +138,10 @@
 
 .loader {
   margin: 0 auto;
-  border: 16px solid white; /* Light grey */
-  border-top: 16px solid #002266; /* Blue */
+  border: 16px solid white;
+  /* Light grey */
+  border-top: 16px solid #002266;
+  /* Blue */
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -165,8 +163,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 a {
@@ -182,7 +185,8 @@ a:hover {
 }
 
 a:active {
-  color: #1a66ff;;
+  color: #1a66ff;
+  ;
 }
 
 cont {
@@ -191,11 +195,9 @@ cont {
 
 #notice {
   margin: 0 auto;
-    background: linear-gradient(
-      115deg,
+  background: linear-gradient(115deg,
       rgba(230, 243, 255, 0.6),
-      rgba(230, 243, 255, 0.6)
-    );
+      rgba(230, 243, 255, 0.6));
   color: black;
   padding: 0.5rem;
   border: solid 1px rgba(230, 243, 255);
@@ -205,5 +207,5 @@ cont {
 }
 
 #notice-text {
-        font-family: 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
