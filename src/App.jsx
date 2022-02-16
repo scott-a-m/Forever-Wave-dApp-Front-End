@@ -4,20 +4,22 @@ import "./App.css";
 import abi from "./utils/ForeverWave.json";
 
 const App = () => {
-  // creat state variable used to store user's public wallet
-
-  const [currentAccount, setCurrentAccount] = useState("");
   const contractAddress = "0xd2c60143Bc9cBCD28BDdBFd357ec9A24F38259e3";
   const contractABI = abi.abi;
 
+  // state variables
+
+  const [currentAccount, setCurrentAccount] = useState("");
   const [allWaves, setAllWaves] = useState([]);
   const [waveCount, updateWaveCount] = useState("");
-  const [mining, setMiningStatus1] = useState("");
-  const [miningComplete, setMiningStatus2] = useState("");
+  const [mining, setMiningStatus] = useState("");
   const [msg, setMessage] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [checked, setChecked] = useState(false);
   const [status, changeStatus] = useState("danger");
+  const [waveContract, setWaveContract] = useState(null);
+
+  // function to make sure users have acknowledged testnet notice
 
   const notice = () => {
     if (status === "success") {
@@ -25,92 +27,111 @@ const App = () => {
     } else {
       changeStatus("success");
     }
-
     setChecked((old) => !old);
   };
 
-  const checkChain = async () => {
-    let chainId = await ethereum.request({ method: "eth_chainId" });
-    console.log("Connected to chain " + chainId);
-    const appChainId = "0x4";
-    if (chainId !== appChainId) {
-      setErrMsg(
-        "Please make sure your wallet is connected to the Rinkeby Test Network"
-      );
-      setTimeout(() => {
-        setErrMsg("");
-      }, 2000);
-      return false;
-    } else {
-      return true;
-    }
-  };
+  // function to save solidity wave contract in state if present
 
-  const getAllWaves = async () => {
+  const checkContract = async () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        console.log("getting waves for you!");
         const foreverWaveContract = new ethers.Contract(
           contractAddress,
           contractABI,
           signer
         );
-
-        const waves = await foreverWaveContract.getAllWaves();
-
-        let wavesCleaned = [];
-        waves.forEach((wave) => {
-          wavesCleaned.unshift({
-            address: wave.waver,
-            timestamp: new Date(wave.timestamp * 1000),
-            message: wave.message,
-          });
-        });
-        setAllWaves(wavesCleaned);
-
-        if (!wavesCleaned.length > 0) {
-          updateWaveCount("Zero");
-        } else {
-          updateWaveCount(wavesCleaned.length);
-        }
-      } else {
-        console.log("Ethereum object does not exist!");
+        setWaveContract(foreverWaveContract);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  // add listener
+  // function to add delay for error messages disappearing
+
+  const delayedMsg = (msg, time) => {
+    setErrMsg(msg);
+    setTimeout(() => {
+      setErrMsg("");
+    }, time);
+  };
+
+  // function for checking whether user is connected to correct blockchain
+
+  const checkChain = async (chainName) => {
+    const chains = {
+      Rinkeby: "0x4",
+      Ropsten: "0x3",
+    };
+
+    let chainId = await ethereum.request({ method: "eth_chainId" });
+    console.log("Connected to chain " + chainId);
+
+    const appChainId = chains[chainName];
+    console.log(appChainId);
+
+    if (chainId !== appChainId) {
+      delayedMsg(
+        `Please make sure your wallet is connected to the ${chainName} Test Network`,
+        2000
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const getAllWaves = async () => {
+    try {
+      const waves = await waveContract.getAllWaves();
+
+      let wavesCleaned = [];
+      waves.forEach((wave) => {
+        wavesCleaned.unshift({
+          address: wave.waver,
+          timestamp: new Date(wave.timestamp * 1000),
+          message: wave.message,
+        });
+      });
+      setAllWaves(wavesCleaned);
+
+      if (!wavesCleaned.length > 0) {
+        updateWaveCount("Zero");
+      } else {
+        updateWaveCount(wavesCleaned.length);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // add wave event listener
 
   useEffect(() => {
-    let foreverWaveContract;
-
     const onNewWave = (from, timestamp, message) => {
       console.log("NewWave", from, timestamp, message);
       getAllWaves();
     };
 
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
-      const foreverWaveContract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-      foreverWaveContract.on("NewWave", onNewWave);
-    }
+    if (!waveContract) return;
+
+    console.log("Wave contract found. Adding listener...");
+    console.log("retrieving waves...");
+
+    getAllWaves();
+
+    waveContract.on("NewWave", onNewWave);
 
     return () => {
-      if (foreverWaveContract) {
-        foreverWaveContract.off("NewWave", onNewWave);
+      if (waveContract) {
+        waveContract.off("NewWave", onNewWave);
       }
     };
-  }, []);
+  }, [waveContract]);
+
+  // check if users wallet is connected
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -122,13 +143,9 @@ const App = () => {
         return;
       }
 
-      const chain = await checkChain();
-
-      if (!chain) {
-        return;
-      }
-
       console.log("We have the ethereum object", ethereum);
+      const chain = await checkChain("Rinkeby");
+      if (!chain) return;
 
       // check if we are authorised to check user's wallet
 
@@ -138,8 +155,7 @@ const App = () => {
         const account = accounts[0];
         console.log(`Authorised account ${account} found.`);
         setCurrentAccount(account);
-        getAllWaves();
-        console.log("getting waves");
+        checkContract();
       } else {
         console.log("No authorised account found.");
       }
@@ -152,25 +168,19 @@ const App = () => {
 
   const connectWallet = async () => {
     try {
-      if (!checked) {
-        setErrMsg("Please first acknowledge the notice below");
-        setTimeout(() => {
-          setErrMsg("");
-        }, 3000);
-        return;
-      }
+      if (!checked)
+        return delayedMsg("Please first acknowledge the notice below", 3000);
 
       const { ethereum } = window;
-      if (!ethereum) {
-        alert("Please make sure you have installed Metamask before conneting.");
-        return;
-      }
 
-      const chain = await checkChain();
+      if (!ethereum)
+        return alert(
+          "Please make sure you have installed Metamask before conneting."
+        );
 
-      if (!chain) {
-        return;
-      }
+      const chain = await checkChain("Rinkeby");
+
+      if (!chain) return;
 
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
@@ -178,99 +188,74 @@ const App = () => {
 
       console.log("connected", accounts[0]);
       setCurrentAccount(accounts[0]);
-      setErrMsg("");
-      console.log("getting waves");
-      getAllWaves();
+      checkContract();
     } catch (error) {
       console.log(error);
     }
   };
 
+  // wave function
+
   const wave = async () => {
     try {
-      if (!msg.length > 0) {
-        setErrMsg("Please wave with a message.");
-        setTimeout(() => {
-          setErrMsg("");
-        }, 2000);
-        return;
-      }
+      if (!msg.length > 0)
+        return delayedMsg("Please wave with a message", 2000);
 
-      if (msg.length > 200) {
-        setErrMsg("Please do not write more than 200 characters.");
-        setTimeout(() => {
-          setErrMsg("");
-        }, 2000);
-        return;
-      }
+      if (msg.length > 200)
+        return delayedMsg(
+          "Please do not write more than 200 characters.",
+          2000
+        );
 
       const { ethereum } = window;
 
-      if (!ethereum) {
-        alert(
+      if (!ethereum)
+        return alert(
           "Please make sure you are signed into Metamask before using this dApp."
         );
-        return;
-      } else if (ethereum) {
-        const chain = await checkChain();
 
-        if (!chain) {
-          return;
-        }
+      const chain = await checkChain("Rinkeby");
+      if (!chain) return;
+      if (!waveContract) return;
 
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const foreverWaveContract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-        let count = await foreverWaveContract.getTotalWaves();
+      let count = await waveContract.getTotalWaves();
+      console.log(`received a total of ${count.toNumber()} waves`);
 
-        console.log(`received a total of ${count.toNumber()} waves`);
+      // execute wave
 
-        // execute wave
+      // first estimate gas to allow for smoother transaction
 
-        const startEstimate = await foreverWaveContract.estimateGas.wave(msg);
-        console.log("Estimated Gas Limit:", startEstimate.toString());
+      const startEstimate = await waveContract.estimateGas.wave(msg);
+      console.log("Estimated Gas Limit:", startEstimate.toString());
 
-        const waveTxn = await foreverWaveContract.wave(msg, {
-          gasLimit: startEstimate,
-        });
-        console.log("mining...", waveTxn.hash);
-        updateWaveCount("");
-        setMiningStatus1("mining");
-        await waveTxn.wait();
-        console.log("mining complete!", waveTxn.hash);
-        setMiningStatus1("");
-        setMiningStatus2("mining complete");
-        setTimeout(() => {
-          setMiningStatus2("");
-        }, 500);
-      } else {
-        console.log("Ethereum object doesn't exist");
-      }
+      const waveTxn = await waveContract.wave(msg, {
+        gasLimit: startEstimate,
+      });
+      console.log("mining...", waveTxn.hash);
+      setMiningStatus("Waving");
+      await waveTxn.wait();
+      console.log("mining complete!", waveTxn.hash);
+      setMiningStatus("Wave Complete");
+      setTimeout(() => {
+        setMiningStatus("");
+      }, 1000);
+      setMessage("");
     } catch (error) {
-      if (error.code === "UNPREDICTABLE_GAS_LIMIT") {
-        console.log("Please wait 5 minutes between sending messages.");
-        setErrMsg("Please wait 5 minutes between sending messages.");
-        setTimeout(() => {
-          setErrMsg("");
-        }, 2000);
-      } else if (error.code === "UNSUPPORTED_OPERATION") {
-        console.log("Please connect your wallet befor sending your message.");
-        setErrMsg("Please connect your wallet befor sending your message.");
-        setTimeout(() => {
-          setErrMsg("");
-        }, 2000);
-      } else {
-        setMiningStatus1("");
-        setErrMsg("An error occured. Please try again");
-        setTimeout(() => {
-          setErrMsg("");
-        }, 2000);
-        console.log(error.code);
-      }
+      setMiningStatus("");
+      console.log(error.code);
+
+      if (error.code === "UNPREDICTABLE_GAS_LIMIT")
+        return delayedMsg(
+          "Please wait 5 minutes between sending messages.",
+          2000
+        );
+      if (error.code === "UNSUPPORTED_OPERATION")
+        return delayedMsg(
+          "Please connect your wallet befor sending your message.",
+          2000
+        );
+
+      return delayedMsg("An error occured, please try again.", 2000);
     }
   };
 
@@ -324,13 +309,8 @@ const App = () => {
         <div>
           {mining && (
             <div>
-              <p className="mining">Waving</p>
+              <p className="mining">{mining}</p>
               <p className="loader"></p>
-            </div>
-          )}
-          {miningComplete && (
-            <div>
-              <p className="mining">Wave Complete!</p>
             </div>
           )}
           <div id="message-box">
@@ -338,6 +318,7 @@ const App = () => {
               id="message"
               type="text"
               required
+              value={msg}
               placeholder="Enter your message here"
               className="input-box"
               onChange={(e) => setMessage(e.target.value)}
