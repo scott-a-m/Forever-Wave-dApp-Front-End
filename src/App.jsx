@@ -2,6 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { ethers } from "ethers";
 import "./App.css";
 import abi from "./utils/ForeverWave.json";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFreeCodeCamp,
+  faGithub,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const App = () => {
   const contractAddress = "0xd2c60143Bc9cBCD28BDdBFd357ec9A24F38259e3";
@@ -18,6 +25,15 @@ const App = () => {
   const [checked, setChecked] = useState(false);
   const [status, changeStatus] = useState("danger");
   const [waveContract, setWaveContract] = useState(null);
+  const [loadMoreDisplay, setLoadMoreDisplay] = useState(false);
+  const [displayItems, setDisplayItems] = useState(7);
+
+  // function for loading more messages
+
+  const loadMore = () => {
+    setDisplayItems(displayItems + 7);
+    console.log(displayItems);
+  };
 
   // function to make sure users have acknowledged testnet notice
 
@@ -96,6 +112,7 @@ const App = () => {
         });
       });
       setAllWaves(wavesCleaned);
+      setLoadMoreDisplay(true);
 
       if (!wavesCleaned.length > 0) {
         updateWaveCount("Zero");
@@ -260,6 +277,14 @@ const App = () => {
   };
 
   useEffect(() => {
+    if (allWaves) {
+      if (displayItems >= allWaves.length) {
+        setLoadMoreDisplay(false);
+      }
+    }
+  }, [loadMore]);
+
+  useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
 
@@ -335,7 +360,7 @@ const App = () => {
             </div>
           )}
           <div>
-            {allWaves.map((wave, index) => {
+            {allWaves.slice(0, displayItems).map((wave, index) => {
               return (
                 <div
                   key={index}
@@ -367,6 +392,13 @@ const App = () => {
                 </div>
               );
             })}
+            {loadMoreDisplay && (
+              <div id="load-more">
+                <button className="waveButton" onClick={loadMore}>
+                  Load More
+                </button>
+              </div>
+            )}
           </div>
         </div>
       );
@@ -374,41 +406,100 @@ const App = () => {
   };
 
   return (
-    <div className="mainContainer">
-      <div className="dataContainer">
-        <div className="header">Forever Wave</div>
-        <div className="bio">
-          <p>
-            Welcome to the <strong>Forever Wave dApp</strong>. dApps are
-            decentralised applications which live on the{" "}
-            <a href="https://en.wikipedia.org/wiki/Blockchain" target="_blank">
-              <strong>blockchain</strong>.
-            </a>
-          </p>
-          <p>
-            Once you connect your wallet, you'll be able to give me a{" "}
-            <strong>wave</strong>, send me a <strong>message</strong> and view
-            all everybody else's. There's also a chance you'll win some Rinkeby
-            test <strong>Eth</strong> &#128512;.
-          </p>
-          <p>
-            Finally, be careful what you write as your message will be recorded{" "}
-            <strong>forever</strong> on the{" "}
-            <a
-              href="https://rinkeby.etherscan.io/address/0xd2c60143Bc9cBCD28BDdBFd357ec9A24F38259e3"
-              target="_blank"
-            >
-              <strong>chain!</strong>
-            </a>{" "}
-            Muhaha!
-          </p>
-        </div>
-        {errMsg && (
-          <div>
-            <p className="errMsg">{errMsg}</p>
+    <div id="head-container">
+      <div className="mainContainer">
+        <div className="dataContainer">
+          <div className="header">Forever Wave</div>
+          <div className="bio">
+            <p>
+              Welcome to the <strong>Forever Wave dApp</strong>. dApps are
+              decentralised applications which live on the{" "}
+              <a
+                href="https://en.wikipedia.org/wiki/Blockchain"
+                target="_blank"
+              >
+                <strong>blockchain</strong>.
+              </a>
+            </p>
+            <p>
+              Once you connect your wallet, you'll be able to give me a{" "}
+              <strong>wave</strong>, send me a <strong>message</strong> and view
+              all everybody else's. There's also a chance you'll win some
+              Rinkeby test <strong>Eth</strong> &#128512;.
+            </p>
+            <p>
+              Finally, be careful what you write as your message will be
+              recorded <strong>forever</strong> on the{" "}
+              <a
+                href="https://rinkeby.etherscan.io/address/0xd2c60143Bc9cBCD28BDdBFd357ec9A24F38259e3"
+                target="_blank"
+              >
+                <strong>chain!</strong>
+              </a>{" "}
+              Muhaha!
+            </p>
           </div>
-        )}
-        <div>{renderContent()}</div>
+          {errMsg && (
+            <div>
+              <p className="errMsg">{errMsg}</p>
+            </div>
+          )}
+          <div>{renderContent()}</div>
+          <div id="contact-block">
+            <p id="designer">developed by Scott Mitchell</p>
+            <a
+              href="https://github.com/scott-a-m"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FontAwesomeIcon
+                icon={faGithub}
+                size="2x"
+                border
+                className="contact-icon"
+              />
+            </a>
+            <a
+              href="https://twitter.com/_scott_a_m"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FontAwesomeIcon
+                icon={faTwitter}
+                size="2x"
+                border
+                className="contact-icon"
+              />
+            </a>
+            <a
+              href="https://www.freecodecamp.org/scott-a-m"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FontAwesomeIcon
+                icon={faFreeCodeCamp}
+                size="2x"
+                border
+                className="contact-icon"
+              />
+            </a>
+            <a href="mailto:scott_a_mitchell@163.com">
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                size="2x"
+                border
+                className="contact-icon"
+              />
+            </a>
+            <p style={{ marginTop: "2rem" }}>
+              with{" "}
+              <a href="https://buildspace.so/" target="_blank">
+                Buildspace
+              </a>
+              .
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
