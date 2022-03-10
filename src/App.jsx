@@ -27,6 +27,7 @@ const App = () => {
   const [waveContract, setWaveContract] = useState(null);
   const [loadMoreDisplay, setLoadMoreDisplay] = useState(false);
   const [displayItems, setDisplayItems] = useState(7);
+  const [btn, setBtn] = useState({ disabled: false, opacity: 1 });
 
   // function for loading more messages
 
@@ -214,6 +215,7 @@ const App = () => {
   // wave function
 
   const wave = async () => {
+    setBtn({ disabled: true, opacity: 0.5 });
     try {
       if (!msg.length > 0)
         return delayedMsg("Please wave with a message", 2000);
@@ -260,6 +262,7 @@ const App = () => {
     } catch (error) {
       setMiningStatus("");
       console.log(error.code);
+      setBtn({ disabled: false, opacity: 1 });
 
       if (error.code === "UNPREDICTABLE_GAS_LIMIT")
         return delayedMsg(
@@ -274,6 +277,7 @@ const App = () => {
 
       return delayedMsg("An error occured, please try again.", 2000);
     }
+    setBtn({ disabled: false, opacity: 1 });
   };
 
   useEffect(() => {
@@ -350,7 +354,12 @@ const App = () => {
             />
           </div>
           <div className="connectContainer">
-            <button className="waveButton" onClick={wave}>
+            <button
+              className="waveButton"
+              onClick={wave}
+              disabled={btn.disabled}
+              style={{ opacity: btn.opacity }}
+            >
               WAVE
             </button>
           </div>

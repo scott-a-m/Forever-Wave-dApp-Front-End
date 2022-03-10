@@ -76,7 +76,6 @@ body::before {
 }
 
 .waveButton {
-  cursor: pointer;
   margin-top: 1rem;
   padding: 8px;
   width: 200px;
@@ -90,9 +89,11 @@ body::before {
   margin-bottom: 30px;
 }
 
-.waveButton:hover {
+.waveButton:hover:enabled {
   color: #002266;
   background: white;
+  cursor: pointer;
+
 }
 
 .input-box {
