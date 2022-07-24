@@ -1,3 +1,65 @@
+/* zhi-mang-xing-regular - latin */
+@font-face {
+  font-family: 'Zhi Mang Xing';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+    url('../public/fonts/zhi-mang-xing-v17-latin-regular.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('../public/fonts/zhi-mang-xing-v17-latin-regular.woff') format('woff');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* jost-100 - latin */
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 100;
+  src: local(''),
+    url('../public/fonts/jost-v14-latin-100.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('../public/fonts/jost-v14-latin-100.woff') format('woff');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* jost-regular - latin */
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+    url('../public/fonts/jost-v14-latin-regular.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('../public/fonts/jost-v14-latin-regular.woff') format('woff');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* mochiy-pop-p-one-regular - latin */
+@font-face {
+  font-family: 'Mochiy Pop P One';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+    url('../fonts/mochiy-pop-p-one-v7-latin-regular.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('../fonts/mochiy-pop-p-one-v7-latin-regular.woff') format('woff');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* cabin-regular - latin */
+@font-face {
+  font-family: 'Cabin';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+    url('../public/fonts/cabin-v26-latin-regular.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+    url('../public/fonts/cabin-v26-latin-regular.woff') format('woff');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+
+
 body::before {
   content: '';
   position: fixed;
@@ -21,7 +83,7 @@ body::before {
 .mainContainer {
   text-align: center;
   font-size: 1.2rem;
-    margin-top: 2rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
 }
 
@@ -155,7 +217,8 @@ body::before {
 }
 
 .contact-icon:hover {
-  color: white;;
+  color: white;
+  ;
   background: #002266;
   cursor: pointer;
 
