@@ -11,7 +11,7 @@ import {
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const App = () => {
-  const contractAddress = "0xd2c60143Bc9cBCD28BDdBFd357ec9A24F38259e3";
+  const contractAddress = "0xD128fC9CEC8312364fA2d0a754A4f1393013b770";
   const contractABI = abi.abi;
 
   // state variables
