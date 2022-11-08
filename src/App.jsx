@@ -82,6 +82,7 @@ const App = () => {
     const chains = {
       Rinkeby: "0x4",
       Ropsten: "0x3",
+      Goerli: "0x5",
     };
 
     let chainId = await ethereum.request({ method: "eth_chainId" });
@@ -162,7 +163,7 @@ const App = () => {
       }
 
       console.log("We have the ethereum object", ethereum);
-      const chain = await checkChain("Rinkeby");
+      const chain = await checkChain("Goerli");
       if (!chain) return;
 
       // check if we are authorised to check user's wallet
@@ -196,7 +197,7 @@ const App = () => {
           "Please make sure you have installed Metamask before conneting."
         );
 
-      const chain = await checkChain("Rinkeby");
+      const chain = await checkChain("Goerli");
 
       if (!chain) return;
 
@@ -233,7 +234,7 @@ const App = () => {
           "Please make sure you are signed into Metamask before using this dApp."
         );
 
-      const chain = await checkChain("Rinkeby");
+      const chain = await checkChain("Goerli");
       if (!chain) return;
       if (!waveContract) return;
 
@@ -304,7 +305,7 @@ const App = () => {
           <div id="cont">
             <div id="notice">
               <p id="notice-text">
-                Forever Wave lives on Ethereum's Rinkeby Test Network.{" "}
+                Forever Wave lives on Ethereum's Goerli Test Network.{" "}
                 <strong>Never</strong> send real Eth to your testnet address. If
                 you did, you would lose it.{" "}
                 <a
@@ -314,7 +315,7 @@ const App = () => {
                   Testnets
                 </a>{" "}
                 use test Eth which you can get for free from{" "}
-                <a href="https://faucets.chain.link/rinkeby" target="_blank">
+                <a href="https://faucets.chain.link/goerli" target="_blank">
                   Chainlink
                 </a>{" "}
                 or other faucets. It is recommended that you create a separate
@@ -433,14 +434,14 @@ const App = () => {
             <p>
               Once you connect your wallet, you'll be able to give me a{" "}
               <strong>wave</strong>, send me a <strong>message</strong> and view
-              all everybody else's. There's also a chance you'll win some
-              Rinkeby test <strong>Eth</strong> &#128512;.
+              all everybody else's. There's also a chance you'll win some Goerli
+              test <strong>Eth</strong> &#128512;.
             </p>
             <p>
               Finally, be careful what you write as your message will be
               recorded <strong>forever</strong> on the{" "}
               <a
-                href="https://rinkeby.etherscan.io/address/0xd2c60143Bc9cBCD28BDdBFd357ec9A24F38259e3"
+                href="https://goerli.etherscan.io/address/0xd2c60143Bc9cBCD28BDdBFd357ec9A24F38259e3"
                 target="_blank"
               >
                 <strong>chain!</strong>
