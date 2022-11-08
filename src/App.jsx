@@ -441,7 +441,7 @@ const App = () => {
               Finally, be careful what you write as your message will be
               recorded <strong>forever</strong> on the{" "}
               <a
-                href="https://goerli.etherscan.io/address/0xd2c60143Bc9cBCD28BDdBFd357ec9A24F38259e3"
+                href="https://goerli.etherscan.io/address/0xD128fC9CEC8312364fA2d0a754A4f1393013b770"
                 target="_blank"
               >
                 <strong>chain!</strong>
